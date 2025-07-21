@@ -27,9 +27,11 @@
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
-            background: var(--bg-color);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: var(--text-color);
             line-height: 1.5;
+            min-height: 100vh;
+            overflow: hidden;
         }
 
         /* Floating Chat Button */
@@ -37,11 +39,11 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary-color), #0052a3);
-            box-shadow: 0 4px 12px var(--shadow-color);
+            box-shadow: 0 8px 25px rgba(0, 102, 204, 0.4);
             cursor: pointer;
             transition: all 0.4s var(--transition-timing);
             z-index: 1000;
@@ -49,120 +51,96 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            animation: pulse 2s infinite;
+            animation: pulseButton 3s infinite;
         }
 
-        @keyframes pulse {
+        @keyframes pulseButton {
             0% {
-                box-shadow: 0 4px 12px var(--shadow-color), 0 0 0 0 rgba(0, 102, 204, 0.4);
+                box-shadow: 0 8px 25px rgba(0, 102, 204, 0.4), 0 0 0 0 rgba(0, 102, 204, 0.7);
+                transform: scale(1);
             }
             50% {
-                box-shadow: 0 6px 16px var(--shadow-color), 0 0 0 10px rgba(0, 102, 204, 0.1);
+                box-shadow: 0 8px 25px rgba(0, 102, 204, 0.4), 0 0 0 20px rgba(0, 102, 204, 0);
+                transform: scale(1.05);
             }
             100% {
-                box-shadow: 0 4px 12px var(--shadow-color), 0 0 0 0 rgba(0, 102, 204, 0);
+                box-shadow: 0 8px 25px rgba(0, 102, 204, 0.4), 0 0 0 0 rgba(0, 102, 204, 0);
+                transform: scale(1);
             }
-        }
-
-        .chat-button::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .chat-button:hover::before {
-            opacity: 1;
         }
 
         .chat-button:hover {
             transform: scale(1.15) rotate(10deg);
-            box-shadow: 0 6px 16px var(--shadow-color);
+            box-shadow: 0 12px 30px rgba(0, 102, 204, 0.6);
             animation: none;
         }
 
         .chat-button svg {
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             fill: white;
             transition: transform 0.3s;
         }
 
-        .chat-button.active svg {
-            transform: scale(0.8);
-        }
-
-        .chat-button::after {
-            content: '';
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            background: url('https://www.axiestudio.se/logo.jpg') center/cover;
-            border-radius: 6px;
+        .chat-button.active {
             opacity: 0;
             transform: scale(0.8);
-            transition: all 0.3s ease;
+            pointer-events: none;
         }
 
-        .chat-button:hover::after {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .chat-button:hover svg {
-            opacity: 0;
-        }
-
-        /* Chat Container */
+        /* Chat Container - Centered */
         .chat-container {
             position: fixed;
-            bottom: 100px;
-            right: 30px;
-            width: 380px;
-            height: 600px;
+            top: 50%;
+            left: 50%;
+            width: 450px;
+            height: 650px;
             background: white;
             border-radius: var(--border-radius);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             overflow: hidden;
             opacity: 0;
-            transform: translateY(30px) scale(0.9) rotateX(10deg);
+            transform: translate(-50%, -50%) scale(0.8) rotateY(15deg);
             pointer-events: none;
-            transition: all 0.4s var(--transition-timing);
+            transition: all 0.6s var(--transition-timing);
             z-index: 999;
             display: flex;
             flex-direction: column;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
         }
 
         .chat-container.active {
             opacity: 1;
-            transform: translateY(0) scale(1) rotateX(0deg);
+            transform: translate(-50%, -50%) scale(1) rotateY(0deg);
             pointer-events: all;
-            animation: slideInBounce 0.6s var(--transition-timing);
+            animation: chatSlideIn 0.8s var(--transition-timing);
         }
 
-        @keyframes slideInBounce {
+        .chat-container.fade-out {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.9) rotateY(-15deg);
+            transition: all 0.8s var(--transition-timing);
+        }
+
+        @keyframes chatSlideIn {
             0% {
                 opacity: 0;
-                transform: translateY(30px) scale(0.9) rotateX(10deg);
+                transform: translate(-50%, -50%) scale(0.8) rotateY(15deg);
             }
             60% {
                 opacity: 1;
-                transform: translateY(-5px) scale(1.02) rotateX(0deg);
+                transform: translate(-50%, -50%) scale(1.05) rotateY(0deg);
             }
             100% {
                 opacity: 1;
-                transform: translateY(0) scale(1) rotateX(0deg);
+                transform: translate(-50%, -50%) scale(1) rotateY(0deg);
             }
         }
 
-        /* Update the header section */
+        /* Chat Header */
         .chat-header {
             background: linear-gradient(135deg, var(--primary-color), #0052a3);
-            padding: 16px 20px;
+            padding: 20px 24px;
             position: relative;
             overflow: hidden;
         }
@@ -174,8 +152,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shimmer 3s infinite;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 4s infinite;
         }
 
         @keyframes shimmer {
@@ -187,149 +165,107 @@
             display: flex;
             align-items: center;
             gap: 16px;
+            color: white;
         }
 
         .header-content img {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
             object-fit: cover;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .header-text {
-            display: flex;
-            flex-direction: column;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
 
         .header-text h2 {
-            font-size: 1.2em;
+            font-size: 1.3em;
             font-weight: 600;
-            letter-spacing: -0.5px;
+            margin-bottom: 4px;
         }
 
         .header-text .status {
-            font-size: 0.85em;
+            font-size: 0.9em;
             opacity: 0.9;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .header-text .status::before {
             content: '';
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             background: #4CAF50;
             border-radius: 50%;
             display: inline-block;
-            box-shadow: 0 0 0 2px rgba(255,255,255,0.2);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
+            animation: statusPulse 2s infinite;
         }
 
-        .chat-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .action-button {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            transition: background-color 0.3s;
-        }
-
-        .action-button:hover {
-            background: rgba(255,255,255,0.1);
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
 
         .chat-messages {
             flex: 1;
-            padding: 20px;
+            padding: 24px;
             overflow-y: auto;
             scroll-behavior: smooth;
             background: #f8f9fa;
         }
 
         .message {
-            margin: 10px 0;
-            padding: 12px 16px;
-            border-radius: 16px;
-            max-width: 80%;
+            margin: 16px 0;
+            padding: 16px 20px;
+            border-radius: 20px;
+            max-width: 85%;
             opacity: 0;
             transform: translateY(30px) scale(0.95);
-            animation: messageSlideIn 0.5s var(--transition-timing) forwards;
-            font-size: 14px;
+            animation: messageSlideIn 0.6s var(--transition-timing) forwards;
+            font-size: 15px;
             position: relative;
             backdrop-filter: blur(5px);
-        }
-
-        .message::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            width: 8px;
-            height: 8px;
-            background: inherit;
+            line-height: 1.6;
         }
 
         .bot-message {
             background: white;
             color: var(--text-color);
             margin-right: auto;
-            border-bottom-left-radius: 4px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-bottom-left-radius: 6px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
             border: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .bot-message::before {
-            left: -4px;
-            border-bottom-right-radius: 8px;
         }
 
         .user-message {
             background: linear-gradient(135deg, var(--primary-color), #0052a3);
             color: white;
             margin-left: auto;
-            border-bottom-right-radius: 4px;
-            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
-        }
-
-        .user-message::before {
-            right: -4px;
-            border-bottom-left-radius: 8px;
-        }
-
-        .message-time {
-            font-size: 0.7em;
-            opacity: 0.7;
-            margin-top: 4px;
-            text-align: right;
+            border-bottom-right-radius: 6px;
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
         }
 
         .typing-indicator {
-            padding: 12px 16px;
+            padding: 16px 20px;
             display: none;
             align-items: center;
-            gap: 4px;
-            margin-bottom: 10px;
+            gap: 6px;
+            margin-bottom: 16px;
             background: white;
-            border-radius: 16px;
+            border-radius: 20px;
             width: fit-content;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            animation: typingPulse 1s ease-in-out infinite;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            animation: typingPulse 1.5s ease-in-out infinite;
         }
 
         @keyframes typingPulse {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
         }
 
         .typing-indicator span {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             background: var(--primary-color);
             display: inline-block;
             border-radius: 50%;
@@ -340,14 +276,14 @@
         .typing-indicator span:nth-child(3) { animation-delay: 0.32s; }
 
         .chat-footer {
-            padding: 16px;
+            padding: 20px 24px;
             background: white;
             border-top: 1px solid #eee;
         }
 
         .chat-input {
             display: flex;
-            gap: 8px;
+            gap: 12px;
             align-items: flex-end;
         }
 
@@ -358,59 +294,42 @@
 
         .chat-input textarea {
             width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #e0e0e0;
-            border-radius: 24px;
+            padding: 16px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
             resize: none;
             max-height: 120px;
             font-family: inherit;
-            font-size: 14px;
+            font-size: 15px;
             line-height: 1.5;
             transition: all 0.3s var(--transition-timing);
+            background: #f8f9fa;
         }
 
         .chat-input textarea:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px var(--primary-light), 0 4px 12px rgba(0, 102, 204, 0.15);
-            transform: translateY(-1px);
-        }
-
-        .input-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .action-icon {
-            padding: 8px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .action-icon:hover {
-            background: var(--primary-light);
-            color: var(--primary-color);
+            box-shadow: 0 0 0 4px var(--primary-light), 0 8px 25px rgba(0, 102, 204, 0.15);
+            transform: translateY(-2px);
+            background: white;
         }
 
         .send-button {
-            padding: 12px 24px;
-            background: var(--primary-color);
+            padding: 16px 28px;
+            background: linear-gradient(135deg, var(--primary-color), #0052a3);
             color: white;
             border: none;
-            border-radius: 24px;
+            border-radius: 25px;
             cursor: pointer;
             transition: all 0.3s var(--transition-timing);
-            font-weight: 500;
-            font-size: 14px;
+            font-weight: 600;
+            font-size: 15px;
             display: flex;
             align-items: center;
             gap: 8px;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);
         }
 
         .send-button::before {
@@ -423,28 +342,236 @@
             background: rgba(255,255,255,0.2);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            transition: all 0.3s;
+            transition: all 0.4s;
         }
 
         .send-button:hover {
-            background: #0052a3;
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+            background: linear-gradient(135deg, #0052a3, #003d7a);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 102, 204, 0.5);
         }
 
         .send-button:hover::before {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
         }
 
         .send-button:active {
-            transform: translateY(0) scale(0.98);
+            transform: translateY(-1px) scale(1.02);
         }
 
         .send-button svg {
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             fill: currentColor;
+        }
+
+        /* Booking System Popup */
+        .booking-system {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            height: 700px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+            transform: translate(-50%, -50%) scale(0.8);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.8s var(--transition-timing);
+            z-index: 1001;
+            overflow: hidden;
+        }
+
+        .booking-system.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: all;
+            animation: bookingSlideIn 1s var(--transition-timing);
+        }
+
+        @keyframes bookingSlideIn {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8) rotateX(15deg);
+            }
+            60% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.05) rotateX(0deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1) rotateX(0deg);
+            }
+        }
+
+        .booking-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 30px;
+            color: white;
+            text-align: center;
+        }
+
+        .booking-header h2 {
+            font-size: 1.8em;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .booking-header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .booking-content {
+            padding: 40px;
+            height: calc(100% - 140px);
+            overflow-y: auto;
+        }
+
+        .booking-step {
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s var(--transition-timing);
+        }
+
+        .booking-step.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .step-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .date-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .date-option {
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s var(--transition-timing);
+            background: #f8f9fa;
+        }
+
+        .date-option:hover {
+            border-color: var(--primary-color);
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.2);
+        }
+
+        .date-option.selected {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .time-option {
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s var(--transition-timing);
+            background: #f8f9fa;
+            font-weight: 500;
+        }
+
+        .time-option:hover {
+            border-color: var(--primary-color);
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .time-option.selected {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s var(--transition-timing);
+            background: #f8f9fa;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+            background: white;
+        }
+
+        .confirm-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s var(--transition-timing);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .confirm-button:hover {
+            background: linear-gradient(135deg, #45a049, #3d8b40);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
         }
 
         @keyframes messageSlideIn {
@@ -464,93 +591,31 @@
         }
 
         /* Custom Scrollbar */
-        .chat-messages::-webkit-scrollbar {
+        .chat-messages::-webkit-scrollbar,
+        .booking-content::-webkit-scrollbar {
             width: 6px;
         }
 
-        .chat-messages::-webkit-scrollbar-track {
+        .chat-messages::-webkit-scrollbar-track,
+        .booking-content::-webkit-scrollbar-track {
             background: transparent;
         }
 
-        .chat-messages::-webkit-scrollbar-thumb {
+        .chat-messages::-webkit-scrollbar-thumb,
+        .booking-content::-webkit-scrollbar-thumb {
             background: #ccc;
             border-radius: 3px;
         }
 
-        .chat-messages::-webkit-scrollbar-thumb:hover {
+        .chat-messages::-webkit-scrollbar-thumb:hover,
+        .booking-content::-webkit-scrollbar-thumb:hover {
             background: #999;
-        }
-
-        /* Suggestions */
-        .suggestions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 16px;
-            padding: 0 16px;
-        }
-
-        .suggestion-chip {
-            padding: 8px 16px;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.3s var(--transition-timing);
-            font-size: 13px;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: chipSlideIn 0.4s var(--transition-timing) forwards;
-        }
-
-        .suggestion-chip:nth-child(2) { animation-delay: 0.1s; }
-        .suggestion-chip:nth-child(3) { animation-delay: 0.2s; }
-        .suggestion-chip:nth-child(4) { animation-delay: 0.3s; }
-        .suggestion-chip:nth-child(5) { animation-delay: 0.4s; }
-
-        @keyframes chipSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .suggestion-chip:hover {
-            background: var(--primary-light);
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.2);
-        }
-
-        .suggestion-chip:active {
-            transform: translateY(0) scale(0.98);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 480px) {
-            .chat-container {
-                width: 100%;
-                height: 100%;
-                bottom: 0;
-                right: 0;
-                border-radius: 0;
-            }
-
-            .chat-button {
-                bottom: 20px;
-                right: 20px;
-            }
         }
     </style>
 </head>
 <body>
     <!-- Floating Chat Button -->
-    <div class="chat-button" onclick="toggleChat()" id="chatButton">
+    <div class="chat-button" onclick="startDemo()" id="chatButton">
         <svg viewBox="0 0 24 24">
             <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
         </svg>
@@ -560,28 +625,20 @@
     <div class="chat-container" id="chatContainer">
         <div class="chat-header">
             <div class="header-content">
-                <img src="https://www.axiestudio.se/logo.jpg" alt="Axie Studio Logo" class="company-logo">
+                <img src="https://images.pexels.com/photos/1181533/pexels-photo-1181533.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop" alt="Axie Studio Logo" class="company-logo">
                 <div class="header-text">
                     <h2>Axie Studio</h2>
-                    <span class="status">Online • Redo att hjälpa dig boka</span>
+                    <span class="status">Online • Redo att hjälpa</span>
                 </div>
-            </div>
-            <div class="chat-actions">
-                <button class="action-button" title="Minimera">_</button>
-                <button class="action-button" onclick="toggleChat()">✕</button>
             </div>
         </div>
 
         <div class="chat-messages" id="chatMessages">
-            <div class="typing-indicator">
+            <div class="typing-indicator" id="typingIndicator">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
-        </div>
-
-        <div class="suggestions" id="suggestions">
-            <!-- Suggestion chips will be added here -->
         </div>
 
         <div class="chat-footer">
@@ -591,122 +648,170 @@
                         placeholder="Skriv ditt meddelande..." 
                         id="messageInput"
                         rows="1"
-                        onInput="autoResize(this)"
+                        readonly
                     ></textarea>
                 </div>
-                <div class="input-actions">
-                    <div class="action-icon" title="Bifoga fil">
-                        📎
-                    </div>
-                    <div class="action-icon" title="Emoji">
-                        😊
-                    </div>
-                    <button class="send-button" onclick="sendMessage()">
-                        <span>Skicka</span>
-                        <svg viewBox="0 0 24 24">
-                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                        </svg>
-                    </button>
+                <button class="send-button" onclick="sendCurrentMessage()" id="sendButton">
+                    <span>Skicka</span>
+                    <svg viewBox="0 0 24 24">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking System -->
+    <div class="booking-system" id="bookingSystem">
+        <div class="booking-header">
+            <h2>Boka Din Tid</h2>
+            <p>Välj datum, tid och fyll i dina uppgifter</p>
+        </div>
+        <div class="booking-content">
+            <div class="booking-step" id="step1">
+                <div class="step-title">
+                    <div class="step-number">1</div>
+                    Välj Datum
                 </div>
+                <div class="date-grid">
+                    <div class="date-option" onclick="selectDate(this, '2024-01-15')">
+                        <div style="font-weight: 600;">15 Jan</div>
+                        <div style="font-size: 0.9em; opacity: 0.8;">Måndag</div>
+                    </div>
+                    <div class="date-option" onclick="selectDate(this, '2024-01-17')">
+                        <div style="font-weight: 600;">17 Jan</div>
+                        <div style="font-size: 0.9em; opacity: 0.8;">Onsdag</div>
+                    </div>
+                    <div class="date-option" onclick="selectDate(this, '2024-01-19')">
+                        <div style="font-weight: 600;">19 Jan</div>
+                        <div style="font-size: 0.9em; opacity: 0.8;">Fredag</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="booking-step" id="step2">
+                <div class="step-title">
+                    <div class="step-number">2</div>
+                    Välj Tid
+                </div>
+                <div class="time-grid">
+                    <div class="time-option" onclick="selectTime(this, '10:00')">10:00</div>
+                    <div class="time-option" onclick="selectTime(this, '13:00')">13:00</div>
+                    <div class="time-option" onclick="selectTime(this, '15:00')">15:00</div>
+                    <div class="time-option" onclick="selectTime(this, '16:30')">16:30</div>
+                </div>
+            </div>
+
+            <div class="booking-step" id="step3">
+                <div class="step-title">
+                    <div class="step-number">3</div>
+                    Dina Uppgifter
+                </div>
+                <div class="form-group">
+                    <label for="name">Namn</label>
+                    <input type="text" id="name" placeholder="Ditt fullständiga namn">
+                </div>
+                <div class="form-group">
+                    <label for="email">E-post</label>
+                    <input type="email" id="email" placeholder="din@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Telefon</label>
+                    <input type="tel" id="phone" placeholder="070-123 45 67">
+                </div>
+                <button class="confirm-button" onclick="confirmBooking()">
+                    Bekräfta Bokning
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        // Update the welcome messages and suggestions
-        const welcomeMessages = [
-            "👋 Välkommen till Axie Studio!",
-            "Jag kan hjälpa dig att boka en tid för konsultation eller demo.",
-            "När skulle du vilja boka ett möte?"
-        ];
-
-        const suggestions = [
-            "Boka demo",
-            "Boka konsultation",
-            "Se tillgängliga tider",
-            "Priser",
-            "Kontakta support"
-        ];
-
-        // Add booking-related responses
-        const bookingResponses = {
-            demo: {
-                times: ["10:00", "13:00", "15:00"],
-                days: ["Måndag", "Onsdag", "Fredag"],
-                response: "Utmärkt! Här är våra lediga tider för demo denna vecka:"
-            },
-            consultation: {
-                times: ["09:00", "11:00", "14:00"],
-                days: ["Tisdag", "Torsdag"],
-                response: "Perfekt! Här är tillgängliga tider för konsultation:"
-            }
-        };
-
         const chatContainer = document.getElementById('chatContainer');
         const chatButton = document.getElementById('chatButton');
         const chatMessages = document.getElementById('chatMessages');
         const messageInput = document.getElementById('messageInput');
-        const suggestionsContainer = document.getElementById('suggestions');
-        let isOpen = false;
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+        const bookingSystem = document.getElementById('bookingSystem');
 
-        // Add suggestion chips
-        function addSuggestions() {
-            suggestions.forEach(suggestion => {
-                const chip = document.createElement('div');
-                chip.className = 'suggestion-chip';
-                chip.textContent = suggestion;
-                chip.onclick = () => {
-                    messageInput.value = suggestion;
-                    sendMessage();
-                };
-                suggestionsContainer.appendChild(chip);
-            });
+        // Conversation flow
+        const conversation = [
+            { type: 'bot', text: 'Hej! Välkommen till Axie Studio! 👋', delay: 1000 },
+            { type: 'bot', text: 'Jag kan hjälpa dig att boka en tid för konsultation eller demo.', delay: 2000 },
+            { type: 'user', text: 'Hej! Jag skulle vilja boka en tid för en demo.', delay: 3000 },
+            { type: 'bot', text: 'Perfekt! En demo är ett utmärkt sätt att se vad vi kan erbjuda.', delay: 2000 },
+            { type: 'bot', text: 'Vilken typ av tjänst är du mest intresserad av?', delay: 2000 },
+            { type: 'user', text: 'Jag är intresserad av webbutveckling och design.', delay: 3000 },
+            { type: 'bot', text: 'Fantastiskt! Vi har stor expertis inom webbutveckling och modern design.', delay: 2000 },
+            { type: 'bot', text: 'Jag kommer öppna vårt bokningssystem nu så du kan välja en tid som passar dig! ✨', delay: 3000 }
+        ];
+
+        let currentStep = 0;
+        let selectedDate = null;
+        let selectedTime = null;
+
+        function startDemo() {
+            chatButton.classList.add('active');
+            chatContainer.classList.add('active');
+            
+            setTimeout(() => {
+                startConversation();
+            }, 800);
         }
 
-        function toggleChat() {
-            isOpen = !isOpen;
-            chatContainer.classList.toggle('active', isOpen);
-            chatButton.classList.toggle('active', isOpen);
-            
-            if (isOpen && chatMessages.children.length === 1) {
-                // Show welcome messages
-                welcomeMessages.forEach((message, index) => {
-                    setTimeout(() => {
-                        addMessage(message);
-                        if (index === welcomeMessages.length - 1) {
-                            addSuggestions();
-                        }
-                    }, (index + 1) * 1000);
-                });
+        function startConversation() {
+            if (currentStep < conversation.length) {
+                const message = conversation[currentStep];
+                
+                setTimeout(() => {
+                    if (message.type === 'user') {
+                        // Show user typing
+                        messageInput.value = message.text;
+                        setTimeout(() => {
+                            addMessage(message.text, false);
+                            messageInput.value = '';
+                            currentStep++;
+                            startConversation();
+                        }, 1500);
+                    } else {
+                        // Show bot typing
+                        showTypingIndicator();
+                        setTimeout(() => {
+                            hideTypingIndicator();
+                            addMessage(message.text, true);
+                            currentStep++;
+                            
+                            // Check if this is the last message
+                            if (currentStep === conversation.length) {
+                                setTimeout(() => {
+                                    openBookingSystem();
+                                }, 2000);
+                            } else {
+                                startConversation();
+                            }
+                        }, 2000);
+                    }
+                }, message.delay);
             }
         }
 
-        function addMessage(message, isBot = true) {
+        function addMessage(text, isBot = true) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isBot ? 'bot-message' : 'user-message'}`;
             
-            // Create message content
             const textNode = document.createTextNode('');
             messageDiv.appendChild(textNode);
-            
-            // Add timestamp
-            const timeDiv = document.createElement('div');
-            timeDiv.className = 'message-time';
-            timeDiv.textContent = new Date().toLocaleTimeString('sv-SE', { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-            });
-            messageDiv.appendChild(timeDiv);
             
             chatMessages.appendChild(messageDiv);
             
             // Animate text typing
             let i = 0;
             const typeWriter = () => {
-                if (i < message.length) {
-                    textNode.nodeValue += message.charAt(i);
+                if (i < text.length) {
+                    textNode.nodeValue += text.charAt(i);
                     i++;
-                    setTimeout(typeWriter, 20);
+                    setTimeout(typeWriter, isBot ? 30 : 20);
                 }
             };
             typeWriter();
@@ -715,96 +820,73 @@
         }
 
         function showTypingIndicator() {
-            const indicator = document.querySelector('.typing-indicator');
-            indicator.style.display = 'flex';
-            return indicator;
+            typingIndicator.style.display = 'flex';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        function hideTypingIndicator(indicator) {
-            indicator.style.display = 'none';
+        function hideTypingIndicator() {
+            typingIndicator.style.display = 'none';
         }
 
-        function autoResize(textarea) {
-            textarea.style.height = 'auto';
-            textarea.style.height = textarea.scrollHeight + 'px';
+        function sendCurrentMessage() {
+            // This function is called when send button is clicked during demo
+            // But the conversation is automated, so we don't need to do anything
         }
 
-        // Update the sendMessage function to handle booking flow
-        async function sendMessage() {
-            const message = messageInput.value.trim();
-            if (!message) return;
-
-            // Add user message
-            addMessage(message, false);
-            messageInput.value = '';
-            messageInput.style.height = 'auto';
-
-            // Show typing indicator
-            const indicator = showTypingIndicator();
-
-            // Clear suggestions after first message
-            suggestionsContainer.innerHTML = '';
-
-            // Handle booking-related responses
+        function openBookingSystem() {
+            // Fade out chat
+            chatContainer.classList.add('fade-out');
+            
             setTimeout(() => {
-                hideTypingIndicator(indicator);
+                // Show booking system
+                bookingSystem.classList.add('active');
                 
-                if (message.toLowerCase().includes('demo')) {
-                    addMessage(bookingResponses.demo.response);
-                    setTimeout(() => {
-                        addBookingOptions('demo');
-                    }, 800);
-                } 
-                else if (message.toLowerCase().includes('konsultation')) {
-                    addMessage(bookingResponses.consultation.response);
-                    setTimeout(() => {
-                        addBookingOptions('consultation');
-                    }, 800);
-                }
-                else if (message.toLowerCase().includes('tid') || message.toLowerCase().includes('tider')) {
-                    addMessage("Vilken typ av möte är du intresserad av? Demo eller konsultation?");
-                    setTimeout(() => {
-                        addSuggestions(['Boka demo', 'Boka konsultation']);
-                    }, 800);
-                }
-                else {
-                    addMessage("Jag förstår att du vill boka en tid. Vill du boka en demo eller konsultation?");
-                    setTimeout(() => {
-                        addSuggestions(['Boka demo', 'Boka konsultation']);
-                    }, 800);
-                }
-            }, 2000);
-        }
-
-        // Add function to display booking options
-        function addBookingOptions(type) {
-            const options = bookingResponses[type];
-            let message = "Välj en tid som passar dig:\n\n";
-            
-            options.days.forEach((day, i) => {
-                options.times.forEach(time => {
-                    message += `${day} ${time}\n`;
-                });
-            });
-            
-            addMessage(message);
-            
-            // Add booking time suggestions
-            const timesuggestions = options.days.map((day, i) => 
-                `${day} ${options.times[i]}`
-            );
-            setTimeout(() => {
-                addSuggestions(timesuggestions);
+                // Animate booking steps
+                setTimeout(() => animateBookingStep(1), 500);
             }, 800);
         }
 
-        // Handle enter key (with shift+enter for new line)
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
+        function animateBookingStep(stepNumber) {
+            const step = document.getElementById(`step${stepNumber}`);
+            if (step) {
+                step.classList.add('active');
             }
-        });
+        }
+
+        function selectDate(element, date) {
+            // Remove previous selection
+            document.querySelectorAll('.date-option').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedDate = date;
+            
+            setTimeout(() => animateBookingStep(2), 800);
+        }
+
+        function selectTime(element, time) {
+            // Remove previous selection
+            document.querySelectorAll('.time-option').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedTime = time;
+            
+            setTimeout(() => animateBookingStep(3), 800);
+        }
+
+        function confirmBooking() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            
+            if (name && email && phone && selectedDate && selectedTime) {
+                alert(`Bokning bekräftad!\n\nDatum: ${selectedDate}\nTid: ${selectedTime}\nNamn: ${name}\nE-post: ${email}\nTelefon: ${phone}`);
+            } else {
+                alert('Vänligen fyll i alla fält och välj datum och tid.');
+            }
+        }
+
+        // Auto-start demo after page load
+        setTimeout(() => {
+            startDemo();
+        }, 2000);
     </script>
 </body>
-</html> 
+</html>
