@@ -4,9 +4,9 @@
   "description": "A modern, animated chatbot interface for Axie Studio's booking system",
   "main": "index.html",
   "scripts": {
-    "dev": "python -m http.server 3000",
-    "start": "python -m http.server 3000",
-    "preview": "python -m http.server 3000"
+    "dev": "http-server . -p 3000 -o",
+    "start": "http-server . -p 3000",
+    "preview": "http-server . -p 3000"
   },
   "keywords": ["chatbot", "animation", "booking", "axie-studio"],
   "author": "Axie Studio",
