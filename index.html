@@ -43,12 +43,25 @@
             background: linear-gradient(135deg, var(--primary-color), #0052a3);
             box-shadow: 0 4px 12px var(--shadow-color);
             cursor: pointer;
-            transition: all 0.3s var(--transition-timing);
+            transition: all 0.4s var(--transition-timing);
             z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 12px var(--shadow-color), 0 0 0 0 rgba(0, 102, 204, 0.4);
+            }
+            50% {
+                box-shadow: 0 6px 16px var(--shadow-color), 0 0 0 10px rgba(0, 102, 204, 0.1);
+            }
+            100% {
+                box-shadow: 0 4px 12px var(--shadow-color), 0 0 0 0 rgba(0, 102, 204, 0);
+            }
         }
 
         .chat-button::before {
@@ -66,8 +79,9 @@
         }
 
         .chat-button:hover {
-            transform: scale(1.1) rotate(5deg);
+            transform: scale(1.15) rotate(10deg);
             box-shadow: 0 6px 16px var(--shadow-color);
+            animation: none;
         }
 
         .chat-button svg {
@@ -111,27 +125,62 @@
             height: 600px;
             background: white;
             border-radius: var(--border-radius);
-            box-shadow: 0 5px 25px var(--shadow-color);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
             overflow: hidden;
             opacity: 0;
-            transform: translateY(20px) scale(0.95);
+            transform: translateY(30px) scale(0.9) rotateX(10deg);
             pointer-events: none;
-            transition: all 0.3s var(--transition-timing);
+            transition: all 0.4s var(--transition-timing);
             z-index: 999;
             display: flex;
             flex-direction: column;
+            backdrop-filter: blur(10px);
         }
 
         .chat-container.active {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0) scale(1) rotateX(0deg);
             pointer-events: all;
+            animation: slideInBounce 0.6s var(--transition-timing);
+        }
+
+        @keyframes slideInBounce {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.9) rotateX(10deg);
+            }
+            60% {
+                opacity: 1;
+                transform: translateY(-5px) scale(1.02) rotateX(0deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1) rotateX(0deg);
+            }
         }
 
         /* Update the header section */
         .chat-header {
             background: linear-gradient(135deg, var(--primary-color), #0052a3);
             padding: 16px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
 
         .header-content {
@@ -210,10 +259,11 @@
             border-radius: 16px;
             max-width: 80%;
             opacity: 0;
-            transform: translateY(20px);
-            animation: slideIn 0.3s var(--transition-timing) forwards;
+            transform: translateY(30px) scale(0.95);
+            animation: messageSlideIn 0.5s var(--transition-timing) forwards;
             font-size: 14px;
             position: relative;
+            backdrop-filter: blur(5px);
         }
 
         .message::before {
@@ -230,7 +280,8 @@
             color: var(--text-color);
             margin-right: auto;
             border-bottom-left-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
         .bot-message::before {
@@ -239,10 +290,11 @@
         }
 
         .user-message {
-            background: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), #0052a3);
             color: white;
             margin-left: auto;
             border-bottom-right-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
         }
 
         .user-message::before {
@@ -263,9 +315,16 @@
             align-items: center;
             gap: 4px;
             margin-bottom: 10px;
-            background: rgba(255,255,255,0.8);
+            background: white;
             border-radius: 16px;
             width: fit-content;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            animation: typingPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes typingPulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
         }
 
         .typing-indicator span {
@@ -274,7 +333,7 @@
             background: var(--primary-color);
             display: inline-block;
             border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out;
+            animation: typingBounce 1.4s infinite ease-in-out;
         }
 
         .typing-indicator span:nth-child(2) { animation-delay: 0.16s; }
@@ -307,13 +366,14 @@
             font-family: inherit;
             font-size: 14px;
             line-height: 1.5;
-            transition: all 0.3s;
+            transition: all 0.3s var(--transition-timing);
         }
 
         .chat-input textarea:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px var(--primary-light);
+            box-shadow: 0 0 0 3px var(--primary-light), 0 4px 12px rgba(0, 102, 204, 0.15);
+            transform: translateY(-1px);
         }
 
         .input-actions {
@@ -343,17 +403,42 @@
             border: none;
             border-radius: 24px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s var(--transition-timing);
             font-weight: 500;
             font-size: 14px;
             display: flex;
             align-items: center;
             gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .send-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s;
         }
 
         .send-button:hover {
             background: #0052a3;
-            transform: translateY(-1px);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+        }
+
+        .send-button:hover::before {
+            width: 100px;
+            height: 100px;
+        }
+
+        .send-button:active {
+            transform: translateY(0) scale(0.98);
         }
 
         .send-button svg {
@@ -362,18 +447,18 @@
             fill: currentColor;
         }
 
-        @keyframes slideIn {
+        @keyframes messageSlideIn {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px) scale(0.95);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
-        @keyframes bounce {
+        @keyframes typingBounce {
             0%, 80%, 100% { transform: scale(0); }
             40% { transform: scale(1); }
         }
@@ -411,14 +496,39 @@
             border: 1px solid #e0e0e0;
             border-radius: 16px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s var(--transition-timing);
             font-size: 13px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: chipSlideIn 0.4s var(--transition-timing) forwards;
+        }
+
+        .suggestion-chip:nth-child(2) { animation-delay: 0.1s; }
+        .suggestion-chip:nth-child(3) { animation-delay: 0.2s; }
+        .suggestion-chip:nth-child(4) { animation-delay: 0.3s; }
+        .suggestion-chip:nth-child(5) { animation-delay: 0.4s; }
+
+        @keyframes chipSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .suggestion-chip:hover {
             background: var(--primary-light);
             border-color: var(--primary-color);
             color: var(--primary-color);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.2);
+        }
+
+        .suggestion-chip:active {
+            transform: translateY(0) scale(0.98);
         }
 
         /* Responsive Design */
@@ -643,27 +753,27 @@
                     addMessage(bookingResponses.demo.response);
                     setTimeout(() => {
                         addBookingOptions('demo');
-                    }, 500);
+                    }, 800);
                 } 
                 else if (message.toLowerCase().includes('konsultation')) {
                     addMessage(bookingResponses.consultation.response);
                     setTimeout(() => {
                         addBookingOptions('consultation');
-                    }, 500);
+                    }, 800);
                 }
                 else if (message.toLowerCase().includes('tid') || message.toLowerCase().includes('tider')) {
                     addMessage("Vilken typ av möte är du intresserad av? Demo eller konsultation?");
                     setTimeout(() => {
                         addSuggestions(['Boka demo', 'Boka konsultation']);
-                    }, 500);
+                    }, 800);
                 }
                 else {
                     addMessage("Jag förstår att du vill boka en tid. Vill du boka en demo eller konsultation?");
                     setTimeout(() => {
                         addSuggestions(['Boka demo', 'Boka konsultation']);
-                    }, 500);
+                    }, 800);
                 }
-            }, 1500);
+            }, 2000);
         }
 
         // Add function to display booking options
@@ -685,7 +795,7 @@
             );
             setTimeout(() => {
                 addSuggestions(timesuggestions);
-            }, 500);
+            }, 800);
         }
 
         // Handle enter key (with shift+enter for new line)
